@@ -68,6 +68,12 @@
     margin: 0;
     padding: 14px;
   }
+  .newInfo{
+	position: absolute;
+	height: 1000px;
+	margin: 50px;
+
+  }
   .topnav input[type=text] {
     border: 1px solid #ccc;  
   }
@@ -137,17 +143,7 @@ var url = 'https://graphql.anilist.co',
         })
     };
 
-	function getQueryVar(variable){
-		var newQuery = window.location.search.substring(1):
-		var vars = query.split("&");
-		for(var i = 0;i<vars.length;i++){
-			var pair = vars[i].split("=");
-			if(pair[0] == variable)
-			{
-				return pair[1];
-			}
-		}
-	}
+
 function handleResponse(response) {
     return response.json().then(function (json) {
         return response.ok ? json : Promise.reject(json);
@@ -156,6 +152,8 @@ function handleResponse(response) {
 
 function handleData(data) {
     console.log(data);
+	newData = (JSON.stringify(data, null, 4));
+	display();
 }
 
 function handleError(error) {
@@ -180,13 +178,11 @@ function changeSearch(newSearch)
 	<div class="topnav">
 		<a class="active" href="#home">Home</a>
 	<div class="search-container">
-    <form action = "search.php" method = "get">
+    <form action = "search.html" method = "get">
       <input type="text" placeholder="Search Anime/Manga" name="newSearch">
 	  <button type="submit" onclick = "changeSearch(newSearch);">Search</button>
     </form>
-
 	</div>
-	<div id = "Info"><span id = "Description"></span></div>
+	<div class = "newInfo" id = "Info"></div>
 </body>
 </html>
-
