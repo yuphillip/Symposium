@@ -56,6 +56,7 @@
   background: #ccc;
 }
 
+
 @media screen and (max-width: 600px) {
   .topnav .search-container {
     float: none;
@@ -68,12 +69,7 @@
     margin: 0;
     padding: 14px;
   }
-  .newInfo{
-	position: absolute;
-	height: 1000px;
-	margin: 50px;
 
-  }
   .topnav input[type=text] {
     border: 1px solid #ccc;  
   }
@@ -83,10 +79,10 @@
 	<script>
 		function initialize()
 		{
-			AnimeExample = "Shirobako";
-			AnimeTitle = document.getElementById("Title");
 			AnimeInfo = document.getElementById("Info");
-			newData = "";
+			AnimeInfo1 = document.getElementById("Info1");
+			newDesc = "";
+			newTitle = "";
 			display();
 			fetch(url, options).then(handleResponse)
                    .then(handleData)
@@ -94,21 +90,8 @@
 		}
 		function display()
 		{
-			AnimeTitle.innerHTML = AnimeExample;
-			AnimeInfo.innerHTML = newData;
-		}
-		function changeText()
-		{
-			if (AnimeExample == "Shirobako")
-			{
-				AnimeExample = "Barakamon";
-				display();
-			}
-			else if (AnimeExample == "Barakamon")
-			{
-				AnimeExample = "Shirobako";
-				display();
-			}
+			AnimeInfo.innerHTML = newTitle;
+			AnimeInfo1.innerHTML = newDesc;
 		}
 		var query = `
 query ($id: Int, $search: String) { # Define which variables will be used in the query (id)
@@ -153,9 +136,18 @@ function handleResponse(response) {
 function handleData(data) {
     console.log(data);
 	newData = (JSON.stringify(data, null, 4));
+	seperateData(newData);
 	display();
 }
 
+function seperateData(newData)
+{
+	temp = newData.indexOf("title");
+	temp2 = newData.indexOf("description");
+	newTitle = newData.substring(temp-1,temp2);
+	temp = newData.indexOf("description");
+	newDesc = newData.substring(temp-1);
+}
 function handleError(error) {
     alert('Error, check console');
     console.error(error);
@@ -173,9 +165,7 @@ function changeSearch(newSearch)
 	</script>
 </head>
 <body onload = "initialize();">
-	<div id = "Title"></div>
-	<button onclick = "changeText();">Change Text</button>
-	<div class="topnav">
+		<div class="topnav">
 		<a class="active" href="#home">Home</a>
 	<div class="search-container">
     <form action = "search.html" method = "get">
@@ -183,6 +173,10 @@ function changeSearch(newSearch)
 	  <button type="submit" onclick = "changeSearch(newSearch);">Search</button>
     </form>
 	</div>
-	<div class = "newInfo" id = "Info"></div>
+	</div>
+
+	<div><div class = "newInfo" id = "Info"></div>
+	<br>
+	<div class = "newInfo1" id = "Info1"></div></div>
 </body>
 </html>
