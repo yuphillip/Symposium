@@ -81,21 +81,27 @@
 		{
 			AnimeInfo = document.getElementById("Info");
 			AnimeInfo1 = document.getElementById("Info1");
+			ImageInfo = document.getElementById("imgInfo");
 			newDesc = "";
 			newTitle = "";
-			display();
+			newImage = "";
 			fetch(url, options).then(handleResponse)
                    .then(handleData)
                    .catch(handleError);
+			display();
 		}
 		function display()
 		{
 			AnimeInfo.innerHTML = newTitle;
 			AnimeInfo1.innerHTML = newDesc;
+			ImageInfo.src = newImage;
 		}
 		var query = `
 query ($id: Int, $search: String) { # Define which variables will be used in the query (id)
   Media (id: $id, search: $search, type: ANIME) { # Insert our variables into the query arguments (id) (type: ANIME is hard-coded in the query)
+	coverImage {
+      large
+    }
     id
     title {
       romaji
@@ -109,7 +115,7 @@ query ($id: Int, $search: String) { # Define which variables will be used in the
 
 
 var variables = {
-    search: "Fairy Tail"
+    search: "your lie in april"
 };
 
 
@@ -147,6 +153,10 @@ function seperateData(newData)
 	newTitle = newData.substring(temp-1,temp2);
 	temp = newData.indexOf("description");
 	newDesc = newData.substring(temp-1);
+	temp3 = newData.indexOf("large");
+	temp = newData.indexOf("id");
+	newImage = newData.substring(temp3+9,temp-30);
+	console.log(newImage);
 }
 function handleError(error) {
     alert('Error, check console');
@@ -176,6 +186,8 @@ function changeSearch(newSearch)
 	</div>
 
 	<div><div class = "newInfo" id = "Info"></div>
+	<br>
+	<img src = "https://i.imgur.com/cXz9gpv.jpg" id = "ImageInfo">
 	<br>
 	<div class = "newInfo1" id = "Info1"></div></div>
 </body>
