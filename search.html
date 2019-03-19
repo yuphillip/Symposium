@@ -76,7 +76,97 @@
 }
 	</style>
 	<script>
-		
+		function initialize()
+		{
+			AnimeInfo = document.getElementById("Info");
+			AnimeInfo1 = document.getElementById("Info1");
+			ImageInfo = document.getElementById("imgInfo");
+			newDesc = "";
+			newTitle = "";
+			newImage = "";
+			fetch(url, options).then(handleResponse)
+                   .then(handleData)
+                   .catch(handleError);
+			display();
+		}
+		function display()
+		{
+			AnimeInfo.innerHTML = newTitle;
+			AnimeInfo1.innerHTML = newDesc;
+			ImageInfo.src = newImage;
+		}
+		var query = `
+query ($id: Int, $search: String) { # Define which variables will be used in the query (id)
+  Media (id: $id, search: $search, type: ANIME) { # Insert our variables into the query arguments (id) (type: ANIME is hard-coded in the query)
+	coverImage {
+      large
+    }
+    id
+    title {
+      romaji
+      english
+      native
+    }
+	description
+  }
+}
+`;
+
+
+	var variables = {
+			search: changeSearch()
+	};
+
+	var url = 'https://graphql.anilist.co',
+		options = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
+			},
+			body: JSON.stringify({
+				query: query,
+				variables: variables
+			})
+		};
+
+
+	function handleResponse(response) {
+		return response.json().then(function (json) {
+        return response.ok ? json : Promise.reject(json);
+		});
+	}
+
+	function handleData(data) {
+		console.log(data);
+		newData = (JSON.stringify(data, null, 4));
+		seperateData(newData);
+		display();
+	}
+
+	function seperateData(newData){
+		temp = newData.indexOf("title");
+		temp2 = newData.indexOf("description");
+		newTitle = newData.substring(temp-1,temp2);
+		temp = newData.indexOf("description");
+		newDesc = newData.substring(temp-1);
+		temp3 = newData.indexOf("large");
+		temp = newData.indexOf("id");
+		newImage = newData.substring(temp3+9,temp-30);
+		console.log(newImage);
+	}
+	function handleError(error) {
+		alert('Error, check console');
+		console.error(error);
+	}
+	function changeSearch()
+	{
+		var currentUrl = window.location.href;
+		var searchStart = currentUrl.indexOf("?") + 7;
+		temp = currentUrl.substring(searchStart);
+		console.log(temp);
+		return temp;
+	}
 	</script>
 </head>
 <body onload = "initialize();">
@@ -84,7 +174,7 @@
 		<a class="active" href="AniListTest.html">Home</a>
 	<div class="search-container">
     <form action = "search.html" method = "get">
-      <input type="text" placeholder="Search Anime/Manga" name="newSearch">
+      <input type="text" placeholder="Search Anime" name="newSearch">
 	  <button type="submit" onclick = "changeSearch(newSearch);">Search</button>
     </form>
 	</div>
