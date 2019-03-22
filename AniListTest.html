@@ -88,6 +88,7 @@
 			ImageInfo = document.getElementById("imgInfo");
 			newDesc = "";
 			newTitle = "";
+			newImage = "";
 			fetch(url, options).then(handleResponse)
                    .then(handleData)
                    .catch(handleError);
@@ -161,7 +162,9 @@ function seperateData(newData)
 }
 function handleError(error) {
     alert('Error, check console');
+	ImageInfo.src = "http://www.animeroot.com/oldnbusted/wp-content/uploads/2013/07/AnimeUnderConstruction.gif";
     console.error(error);
+
 }
 
 	</script>
