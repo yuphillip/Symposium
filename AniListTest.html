@@ -79,7 +79,7 @@ function seperateData(newData)
 	temp2 = newData.indexOf("description");
 	newTitle = newData.substring(temp-1,temp2);
 	temp = newData.indexOf("description");
-	newDesc = newData.substring(temp-1);
+	newDesc = newData.substring(temp-1,newData.length-100000);
 	temp3 = newData.indexOf("large");
 	temp = newData.indexOf("id");
 	newImage = newData.substring(temp3+9,temp-30);
@@ -94,7 +94,7 @@ function handleError(error) {
 
 	</script>
 </head>
-<body onload = "initialize();" style ="background-image: url(https://i.imgur.com/cXz9gpv.jpg); background-repeat: no-repeat; background-size: cover;">
+<body onload = "initialize();" style ="background-image: url(homePagePic.jpg); background-repeat: no-repeat; background-size: cover;">
 		<div class="topnav">
 		<a class="active" href="AniListTest.html">Home</a>
 	<div class="search-container">
@@ -104,7 +104,7 @@ function handleError(error) {
     </form>
 	</div>
 	</div>
-	<div class = "titleText" style= "color: green;"> Welcome to my anime search tool </div>
+	<div class = "titleText" style= "color: #ffff99; font-size: 100px;"> Welcome to my Anime Search Tool </div>
 	<div><div class = "newInfo" id = "Info"></div></div>
 	<br>
 	<div class="parent" position = "relative" display = "inline-block" width = "1000px" height = "600px">
